@@ -13,10 +13,10 @@ func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
 }
 
-func do(r io.Reader) error {
+func do(rev *Reverser, r io.Reader) error {
 	b := bufio.NewScanner(r)
 	for b.Scan() {
-		fmt.Println(reverse(b.Text()))
+		fmt.Println(rev.Reverse(b.Text()))
 	}
 	return b.Err()
 }
@@ -28,7 +28,8 @@ func _main() int {
 		return 2
 	}
 
-	if err = do(r); err != nil {
+	rev := NewReverser()
+	if err = do(rev, r); err != nil {
 		printErr(err)
 		return 1
 	}
