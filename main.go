@@ -13,15 +13,6 @@ func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
 }
 
-func reverse(s string) string {
-	a := []rune(s)
-	b := make([]rune, len(a))
-	for i := 0; i < len(a); i++ {
-		b[len(a)-i-1] = a[i]
-	}
-	return string(b)
-}
-
 func do(r io.Reader) error {
 	b := bufio.NewScanner(r)
 	for b.Scan() {
