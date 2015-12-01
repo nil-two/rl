@@ -30,8 +30,8 @@ func version() {
 
 type Option struct {
 	Delimiter string `short:"d" long:"delimiter"`
-	isHelp    bool   `          long:"help"`
-	isVersion bool   `          long:"version"`
+	IsHelp    bool   `          long:"help"`
+	IsVersion bool   `          long:"version"`
 	Files     []string
 }
 
@@ -72,10 +72,10 @@ func _main() int {
 		return 2
 	}
 	switch {
-	case opt.isHelp:
+	case opt.IsHelp:
 		usage()
 		return 0
-	case opt.isVersion:
+	case opt.IsVersion:
 		version()
 		return 0
 	}
