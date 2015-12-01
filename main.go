@@ -39,6 +39,12 @@ func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
 }
 
+func guideToHelp() {
+	os.Stderr.WriteString(`
+Try 'rl --help' for more information.
+`[1:])
+}
+
 func do(rev *Reverser, r io.Reader) error {
 	b := bufio.NewScanner(r)
 	for b.Scan() {
