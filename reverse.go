@@ -1,10 +1,15 @@
 package main
 
 type Reverser struct {
+	delimiter string
 }
 
 func NewReverser() *Reverser {
 	return &Reverser{}
+}
+
+func (r *Reverser) SetDelimiter(s string) {
+	r.delimiter = s
 }
 
 func (r *Reverser) Reverse(s string) string {
