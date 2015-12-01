@@ -6,8 +6,16 @@ import (
 	"io"
 	"os"
 
+	"github.com/jessevdk/go-flags"
 	"github.com/yuya-takeyama/argf"
 )
+
+type Option struct {
+	Delimiter string `short:"d" long:"delimiter"`
+	isHelp    bool   `          long:"help"`
+	isVersion bool   `          long:"version"`
+	Files     []string
+}
 
 func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
