@@ -22,6 +22,12 @@ Options:
 `[1:])
 }
 
+func version() {
+	os.Stderr.WriteString(`
+0.1.0
+`[1:])
+}
+
 type Option struct {
 	Delimiter string `short:"d" long:"delimiter"`
 	isHelp    bool   `          long:"help"`
