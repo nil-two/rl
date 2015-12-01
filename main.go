@@ -35,6 +35,17 @@ type Option struct {
 	Files     []string
 }
 
+func parseOption(args []string) (opt *Option, err error) {
+	opt = &Option{}
+	flag := flags.NewParser(opt, flags.PassDoubleDash)
+
+	opt.Files, err = flag.ParseArgs(args)
+	if err != nil {
+		return nil, err
+	}
+	return opt, nil
+}
+
 func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
 }
