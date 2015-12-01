@@ -6,38 +6,89 @@ import (
 	"io"
 	"os"
 
+	"github.com/jessevdk/go-flags"
 	"github.com/yuya-takeyama/argf"
 )
+
+func usage() {
+	os.Stderr.WriteString(`
+Usage: rl [OPTION]... [FILE]...
+Reverse lines of FILE(s), or standard input.
+
+Options:
+  -d, --delimiter=DELIM    delimit line by DELIM
+      --help               display this help text and exit
+      --version            output version information and exit
+`[1:])
+}
+
+func version() {
+	os.Stderr.WriteString(`
+0.1.0
+`[1:])
+}
+
+type Option struct {
+	Delimiter string `short:"d" long:"delimiter"`
+	IsHelp    bool   `          long:"help"`
+	IsVersion bool   `          long:"version"`
+	Files     []string
+}
+
+func parseOption(args []string) (opt *Option, err error) {
+	opt = &Option{}
+	flag := flags.NewParser(opt, flags.PassDoubleDash)
+
+	opt.Files, err = flag.ParseArgs(args)
+	if err != nil {
+		return nil, err
+	}
+	return opt, nil
+}
 
 func printErr(err error) {
 	fmt.Fprintln(os.Stderr, "rl:", err)
 }
 
-func reverse(s string) string {
-	a := []rune(s)
-	b := make([]rune, len(a))
-	for i := 0; i < len(a); i++ {
-		b[len(a)-i-1] = a[i]
-	}
-	return string(b)
+func guideToHelp() {
+	os.Stderr.WriteString(`
+Try 'rl --help' for more information.
+`[1:])
 }
 
-func do(r io.Reader) error {
+func do(rev *Reverser, r io.Reader) error {
 	b := bufio.NewScanner(r)
 	for b.Scan() {
-		fmt.Println(reverse(b.Text()))
+		fmt.Println(rev.Reverse(b.Text()))
 	}
 	return b.Err()
 }
 
 func _main() int {
-	r, err := argf.From(os.Args[1:])
+	opt, err := parseOption(os.Args[1:])
+	if err != nil {
+		printErr(err)
+		guideToHelp()
+		return 2
+	}
+	switch {
+	case opt.IsHelp:
+		usage()
+		return 0
+	case opt.IsVersion:
+		version()
+		return 0
+	}
+
+	r, err := argf.From(opt.Files)
 	if err != nil {
 		printErr(err)
 		return 2
 	}
 
-	if err = do(r); err != nil {
+	rev := NewReverser()
+	rev.SetDelimiter(opt.Delimiter)
+	if err = do(rev, r); err != nil {
 		printErr(err)
 		return 1
 	}
