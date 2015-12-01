@@ -65,7 +65,22 @@ func do(rev *Reverser, r io.Reader) error {
 }
 
 func _main() int {
-	r, err := argf.From(os.Args[1:])
+	opt, err := parseOption(os.Args[1:])
+	if err != nil {
+		printErr(err)
+		guideToHelp()
+		return 2
+	}
+	switch {
+	case opt.isHelp:
+		usage()
+		return 0
+	case opt.isVersion:
+		version()
+		return 0
+	}
+
+	r, err := argf.From(opt.Files)
 	if err != nil {
 		printErr(err)
 		return 2
