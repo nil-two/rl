@@ -87,6 +87,7 @@ func _main() int {
 	}
 
 	rev := NewReverser()
+	rev.SetDelimiter(opt.Delimiter)
 	if err = do(rev, r); err != nil {
 		printErr(err)
 		return 1
