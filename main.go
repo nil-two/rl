@@ -10,6 +10,18 @@ import (
 	"github.com/yuya-takeyama/argf"
 )
 
+func usage() {
+	os.Stderr.WriteString(`
+Usage: rl [OPTION]... [FILE]...
+Reverse lines of FILE(s), or standard input.
+
+Options:
+  -d, --delimiter=DELIM    delimit line by DELIM
+      --help               display this help text and exit
+      --version            output version information and exit
+`[1:])
+}
+
 type Option struct {
 	Delimiter string `short:"d" long:"delimiter"`
 	isHelp    bool   `          long:"help"`
