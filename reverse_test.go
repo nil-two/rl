@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -46,5 +47,22 @@ func TestReverseWithDelimiter(t *testing.T) {
 			t.Errorf("Reverse(%q) = %q, want %q",
 				test.src, actual, expect)
 		}
+	}
+}
+
+func BenchmarkReverse(b *testing.B) {
+	src := strings.Repeat("abc", 10000)
+	rev := NewReverser()
+	for i := 0; i < b.N; i++ {
+		rev.Reverse(src)
+	}
+}
+
+func BenchmarkReverseWithDelimiter(b *testing.B) {
+	src := strings.TrimSuffix(strings.Repeat("abc,", 10000), ",")
+	rev := NewReverser()
+	rev.SetDelimiter(",")
+	for i := 0; i < b.N; i++ {
+		rev.Reverse(src)
 	}
 }
