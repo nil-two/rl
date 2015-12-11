@@ -1,6 +1,8 @@
 rl
 ==
 
+[![Build Status](https://travis-ci.org/kusabashira/rl.svg?branch=master)](https://travis-ci.org/kusabashira/rl)
+
 Reverse lines.
 
 Usage
