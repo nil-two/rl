@@ -18,9 +18,8 @@ func (r *Reverser) SetDelimiter(s string) {
 
 func (r *Reverser) Reverse(s string) string {
 	a := strings.Split(s, r.delimiter)
-	b := make([]string, len(a))
-	for i := 0; i < len(a); i++ {
-		b[len(a)-i-1] = a[i]
+	for i := 0; i < len(a)/2; i++ {
+		a[i], a[len(a)-i-1] = a[len(a)-i-1], a[i]
 	}
-	return strings.Join(b, r.delimiter)
+	return strings.Join(a, r.delimiter)
 }
