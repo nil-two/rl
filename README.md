@@ -17,6 +17,15 @@ Options:
       --version            output version information and exit
 ```
 
+Installation
+------------
+
+### go get
+
+```
+go get github.com/kusabashira/rl
+```
+
 Options
 -------
 
