@@ -17,6 +17,31 @@ Options:
       --version            output version information and exit
 ```
 
+Options
+-------
+
+### --help
+
+Display the usage and exit.
+
+### --version
+
+Output the version of rl.
+
+### -d, --delimiter=DELIM
+
+Reverse lines delimited by DELIM.
+
+```sh
+$ cat nums
+1,20,300,4000
+10,20,30,40,50
+
+$ cat nums | rl -d,
+4000,300,20,1
+50,40,30,20,10
+```
+
 License
 -------
 
