@@ -5,6 +5,11 @@ rl
 
 Reverse lines.
 
+```
+$ echo Hello World | rl
+dlroW olleH
+```
+
 Usage
 -----
 
