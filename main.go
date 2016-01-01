@@ -4,10 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 
-	"github.com/jessevdk/go-flags"
+	"github.com/ogier/pflag"
 	"github.com/yuya-takeyama/argf"
+)
+
+var (
+	flag      = pflag.NewFlagSet("rl", pflag.ContinueOnError)
+	delimiter = flag.StringP("delimiter", "d", "", "")
+	isHelp    = flag.BoolP("help", "", false, "")
+	isVersion = flag.BoolP("version", "", false, "")
 )
 
 func usage() {
@@ -26,24 +34,6 @@ func version() {
 	os.Stderr.WriteString(`
 0.2.1
 `[1:])
-}
-
-type Option struct {
-	Delimiter string `short:"d" long:"delimiter"`
-	IsHelp    bool   `          long:"help"`
-	IsVersion bool   `          long:"version"`
-	Files     []string
-}
-
-func parseOption(args []string) (opt *Option, err error) {
-	opt = &Option{}
-	flag := flags.NewParser(opt, flags.PassDoubleDash)
-
-	opt.Files, err = flag.ParseArgs(args)
-	if err != nil {
-		return nil, err
-	}
-	return opt, nil
 }
 
 func printErr(err error) {
@@ -65,29 +55,28 @@ func do(rev *Reverser, r io.Reader) error {
 }
 
 func _main() int {
-	opt, err := parseOption(os.Args[1:])
-	if err != nil {
+	flag.SetOutput(ioutil.Discard)
+	if err := flag.Parse(os.Args[1:]); err != nil {
 		printErr(err)
 		guideToHelp()
 		return 2
 	}
 	switch {
-	case opt.IsHelp:
+	case *isHelp:
 		usage()
 		return 0
-	case opt.IsVersion:
+	case *isVersion:
 		version()
 		return 0
 	}
 
-	r, err := argf.From(opt.Files)
+	r, err := argf.From(flag.Args())
 	if err != nil {
 		printErr(err)
 		return 2
 	}
-
 	rev := NewReverser()
-	rev.SetDelimiter(opt.Delimiter)
+	rev.SetDelimiter(*delimiter)
 	if err = do(rev, r); err != nil {
 		printErr(err)
 		return 1
