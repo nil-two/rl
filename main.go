@@ -17,8 +17,8 @@ var (
 
 	flag      = pflag.NewFlagSet(name, pflag.ContinueOnError)
 	delimiter = flag.StringP("delimiter", "d", "", "")
-	isHelp    = flag.BoolP("help", "", false, "")
-	isVersion = flag.BoolP("version", "", false, "")
+	isHelp    = flag.BoolP("help", "h", false, "")
+	isVersion = flag.BoolP("version", "v", false, "")
 )
 
 func printUsage() {
@@ -28,8 +28,8 @@ Reverse lines of FILE(s), or standard input.
 
 Options:
   -d, --delimiter=DELIM    delimit lines by DELIM
-      --help               display this help text and exit
-      --version            output version information and exit
+  -h, --help               display this help text and exit
+  -v, --version            output version information and exit
 `[1:], name)
 }
 
