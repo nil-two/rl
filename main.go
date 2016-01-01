@@ -12,6 +12,8 @@ import (
 )
 
 var (
+	version = "0.2.1"
+
 	flag      = pflag.NewFlagSet("rl", pflag.ContinueOnError)
 	delimiter = flag.StringP("delimiter", "d", "", "")
 	isHelp    = flag.BoolP("help", "", false, "")
@@ -31,9 +33,7 @@ Options:
 }
 
 func printVersion() {
-	os.Stderr.WriteString(`
-0.2.1
-`[1:])
+	fmt.Fprintln(os.Stderr, version)
 }
 
 func printErr(err error) {
