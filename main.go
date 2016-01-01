@@ -21,7 +21,7 @@ var (
 	isVersion = flag.BoolP("version", "", false, "")
 )
 
-func usage() {
+func printUsage() {
 	fmt.Fprintf(os.Stderr, `
 Usage: %s [OPTION]... [FILE]...
 Reverse lines of FILE(s), or standard input.
@@ -62,7 +62,7 @@ func _main() int {
 	}
 	switch {
 	case *isHelp:
-		usage()
+		printUsage()
 		return 0
 	case *isVersion:
 		printVersion()
