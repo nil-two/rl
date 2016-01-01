@@ -44,8 +44,8 @@ func TestReverseWithDelimiter(t *testing.T) {
 		expect := test.dst
 		actual := rev.Reverse(test.src)
 		if actual != expect {
-			t.Errorf("Reverse(%q) = %q, want %q",
-				test.src, actual, expect)
+			t.Errorf("%q.Reverse(%q) = %q, want %q",
+				rev.delimiter, test.src, actual, expect)
 		}
 	}
 }
