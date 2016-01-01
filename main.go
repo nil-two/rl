@@ -4,56 +4,45 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 
-	"github.com/jessevdk/go-flags"
+	"github.com/ogier/pflag"
 	"github.com/yuya-takeyama/argf"
 )
 
-func usage() {
-	os.Stderr.WriteString(`
-Usage: rl [OPTION]... [FILE]...
+var (
+	name    = "rl"
+	version = "0.2.1"
+
+	flag      = pflag.NewFlagSet(name, pflag.ContinueOnError)
+	delimiter = flag.StringP("delimiter", "d", "", "")
+	isHelp    = flag.BoolP("help", "h", false, "")
+	isVersion = flag.BoolP("version", "v", false, "")
+)
+
+func printUsage() {
+	fmt.Fprintf(os.Stderr, `
+Usage: %s [OPTION]... [FILE]...
 Reverse lines of FILE(s), or standard input.
 
 Options:
   -d, --delimiter=DELIM    delimit lines by DELIM
-      --help               display this help text and exit
-      --version            output version information and exit
-`[1:])
+  -h, --help               display this help text and exit
+  -v, --version            output version information and exit
+`[1:], name)
 }
 
-func version() {
-	os.Stderr.WriteString(`
-0.2.1
-`[1:])
-}
-
-type Option struct {
-	Delimiter string `short:"d" long:"delimiter"`
-	IsHelp    bool   `          long:"help"`
-	IsVersion bool   `          long:"version"`
-	Files     []string
-}
-
-func parseOption(args []string) (opt *Option, err error) {
-	opt = &Option{}
-	flag := flags.NewParser(opt, flags.PassDoubleDash)
-
-	opt.Files, err = flag.ParseArgs(args)
-	if err != nil {
-		return nil, err
-	}
-	return opt, nil
+func printVersion() {
+	fmt.Fprintln(os.Stderr, version)
 }
 
 func printErr(err error) {
-	fmt.Fprintln(os.Stderr, "rl:", err)
+	fmt.Fprintf(os.Stderr, "%s: %s\n", name, err)
 }
 
 func guideToHelp() {
-	os.Stderr.WriteString(`
-Try 'rl --help' for more information.
-`[1:])
+	fmt.Fprintf(os.Stderr, "Try '%s --help' for more information.\n", name)
 }
 
 func do(rev *Reverser, r io.Reader) error {
@@ -65,29 +54,28 @@ func do(rev *Reverser, r io.Reader) error {
 }
 
 func _main() int {
-	opt, err := parseOption(os.Args[1:])
-	if err != nil {
+	flag.SetOutput(ioutil.Discard)
+	if err := flag.Parse(os.Args[1:]); err != nil {
 		printErr(err)
 		guideToHelp()
 		return 2
 	}
 	switch {
-	case opt.IsHelp:
-		usage()
+	case *isHelp:
+		printUsage()
 		return 0
-	case opt.IsVersion:
-		version()
+	case *isVersion:
+		printVersion()
 		return 0
 	}
 
-	r, err := argf.From(opt.Files)
+	r, err := argf.From(flag.Args())
 	if err != nil {
 		printErr(err)
 		return 2
 	}
-
 	rev := NewReverser()
-	rev.SetDelimiter(opt.Delimiter)
+	rev.SetDelimiter(*delimiter)
 	if err = do(rev, r); err != nil {
 		printErr(err)
 		return 1
