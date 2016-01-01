@@ -18,8 +18,8 @@ $ rl [OPTION]... [FILE]...
 
 Options:
   -d, --delimiter=DELIM    delimit line by DELIM
-      --help               display this help text and exit
-      --version            output version information and exit
+  -h, --help               display this help text and exit
+  -v, --version            output version information and exit
 ```
 
 Installation
@@ -34,11 +34,11 @@ go get github.com/kusabashira/rl
 Options
 -------
 
-### --help
+### -h, --help
 
 Display the usage and exit.
 
-### --version
+### -v, --version
 
 Output the version of rl.
 
