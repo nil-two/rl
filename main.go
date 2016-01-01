@@ -12,24 +12,25 @@ import (
 )
 
 var (
+	name    = "rl"
 	version = "0.2.1"
 
-	flag      = pflag.NewFlagSet("rl", pflag.ContinueOnError)
+	flag      = pflag.NewFlagSet(name, pflag.ContinueOnError)
 	delimiter = flag.StringP("delimiter", "d", "", "")
 	isHelp    = flag.BoolP("help", "", false, "")
 	isVersion = flag.BoolP("version", "", false, "")
 )
 
 func usage() {
-	os.Stderr.WriteString(`
-Usage: rl [OPTION]... [FILE]...
+	fmt.Fprintf(os.Stderr, `
+Usage: %s [OPTION]... [FILE]...
 Reverse lines of FILE(s), or standard input.
 
 Options:
   -d, --delimiter=DELIM    delimit lines by DELIM
       --help               display this help text and exit
       --version            output version information and exit
-`[1:])
+`[1:], name)
 }
 
 func printVersion() {
@@ -37,13 +38,11 @@ func printVersion() {
 }
 
 func printErr(err error) {
-	fmt.Fprintln(os.Stderr, "rl:", err)
+	fmt.Fprintf(os.Stderr, "%s: %s\n", name, err)
 }
 
 func guideToHelp() {
-	os.Stderr.WriteString(`
-Try 'rl --help' for more information.
-`[1:])
+	fmt.Fprintf(os.Stderr, "Try '%s --help' for more information.\n", name)
 }
 
 func do(rev *Reverser, r io.Reader) error {
