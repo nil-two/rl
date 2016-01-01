@@ -13,7 +13,7 @@ import (
 
 var (
 	name    = "rl"
-	version = "0.2.1"
+	version = "0.3.0"
 
 	flag      = pflag.NewFlagSet(name, pflag.ContinueOnError)
 	delimiter = flag.StringP("delimiter", "d", "", "")
