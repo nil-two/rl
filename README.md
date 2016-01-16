@@ -25,6 +25,10 @@ Options:
 Installation
 ------------
 
+### compiled binary
+
+See [releases](https://github.com/kusabashira/rl/releases)
+
 ### go get
 
 ```
