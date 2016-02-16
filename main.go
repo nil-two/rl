@@ -15,10 +15,10 @@ var (
 	name    = "rl"
 	version = "0.3.1"
 
-	flag      = pflag.NewFlagSet(name, pflag.ContinueOnError)
-	delimiter = flag.StringP("delimiter", "d", "", "")
-	isHelp    = flag.BoolP("help", "h", false, "")
-	isVersion = flag.BoolP("version", "v", false, "")
+	flagset   = pflag.NewFlagSet(name, pflag.ContinueOnError)
+	delimiter = flagset.StringP("delimiter", "d", "", "")
+	isHelp    = flagset.BoolP("help", "h", false, "")
+	isVersion = flagset.BoolP("version", "v", false, "")
 )
 
 func printUsage() {
@@ -54,8 +54,8 @@ func do(rev *Reverser, r io.Reader) error {
 }
 
 func _main() int {
-	flag.SetOutput(ioutil.Discard)
-	if err := flag.Parse(os.Args[1:]); err != nil {
+	flagset.SetOutput(ioutil.Discard)
+	if err := flagset.Parse(os.Args[1:]); err != nil {
 		printErr(err)
 		guideToHelp()
 		return 2
@@ -69,7 +69,7 @@ func _main() int {
 		return 0
 	}
 
-	r, err := argf.From(flag.Args())
+	r, err := argf.From(flagset.Args())
 	if err != nil {
 		printErr(err)
 		return 2
