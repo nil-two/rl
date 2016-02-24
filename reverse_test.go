@@ -9,6 +9,7 @@ var reverseDefaultTests = []struct {
 	src string
 	dst string
 }{
+	{"", ""},
 	{"abcd", "dcba"},
 	{" \t\n", "\n\t "},
 	{"日本語", "語本日"},
@@ -32,6 +33,7 @@ var reverseWithDelimiterTests = []struct {
 	src       string
 	dst       string
 }{
+	{",", "", ""},
 	{",", "abcd", "abcd"},
 	{",", "10,200,3000", "3000,200,10"},
 	{"、", "十、二百、三千", "三千、二百、十"},
