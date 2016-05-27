@@ -40,7 +40,7 @@ Options
 
 ### -h, --help
 
-Display the usage and exit.
+Display a help message.
 
 ### -v, --version
 
