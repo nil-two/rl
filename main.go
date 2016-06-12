@@ -12,10 +12,10 @@ import (
 )
 
 var (
-	name    = "rl"
+	cmdName = "rl"
 	version = "0.3.1"
 
-	flagset   = pflag.NewFlagSet(name, pflag.ContinueOnError)
+	flagset   = pflag.NewFlagSet(cmdName, pflag.ContinueOnError)
 	delimiter = flagset.StringP("delimiter", "d", "", "")
 	isHelp    = flagset.BoolP("help", "h", false, "")
 	isVersion = flagset.BoolP("version", "v", false, "")
@@ -30,7 +30,7 @@ Options:
   -d, --delimiter=DELIM    delimit lines by DELIM
   -h, --help               display this help text and exit
   -v, --version            output version information and exit
-`[1:], name)
+`[1:], cmdName)
 }
 
 func printVersion() {
@@ -38,11 +38,11 @@ func printVersion() {
 }
 
 func printErr(err error) {
-	fmt.Fprintf(os.Stderr, "%s: %s\n", name, err)
+	fmt.Fprintf(os.Stderr, "%s: %s\n", cmdName, err)
 }
 
 func guideToHelp() {
-	fmt.Fprintf(os.Stderr, "Try '%s --help' for more information.\n", name)
+	fmt.Fprintf(os.Stderr, "Try '%s --help' for more information.\n", cmdName)
 }
 
 func do(rev *Reverser, r io.Reader) error {
