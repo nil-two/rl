@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	cmdName = "rl"
-	version = "0.3.1"
+	cmdName    = "rl"
+	cmdVersion = "0.3.1"
 
 	flagset   = pflag.NewFlagSet(cmdName, pflag.ContinueOnError)
 	delimiter = flagset.StringP("delimiter", "d", "", "")
@@ -34,7 +34,7 @@ Options:
 }
 
 func printVersion() {
-	fmt.Fprintln(os.Stderr, version)
+	fmt.Fprintln(os.Stderr, cmdVersion)
 }
 
 func printErr(err error) {
