@@ -34,7 +34,7 @@ Options:
 }
 
 func printVersion() {
-	fmt.Fprintln(os.Stderr, cmdVersion)
+	fmt.Fprintf(os.Stderr, "%s\n", cmdVersion)
 }
 
 func printErr(err error) {
