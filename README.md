@@ -1,8 +1,6 @@
 rl
 ==
 
-[![Build Status](https://travis-ci.org/kusabashira/rl.svg?branch=master)](https://travis-ci.org/kusabashira/rl)
-
 Reverse lines.
 
 ```
@@ -27,12 +25,12 @@ Installation
 
 ### compiled binary
 
-See [releases](https://github.com/kusabashira/rl/releases)
+See [releases](https://github.com/nil2nekoni/rl/releases)
 
 ### go get
 
 ```
-go get github.com/kusabashira/rl
+go get github.com/nil2nekoni/rl
 ```
 
 Options
@@ -68,4 +66,4 @@ MIT License
 Author
 ------
 
-kusabashira <kusabashira227@gmail.com>
+nil2 <nil2@nil2.org>
