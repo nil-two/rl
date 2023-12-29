@@ -1,6 +1,8 @@
 rl
 ==
 
+[![CI](https://github.com/nil-two/rl/actions/workflows/test.yml/badge.svg)](https://github.com/nil-two/rl/actions/workflows/test.yml)
+
 Reverse lines.
 
 ```
@@ -12,50 +14,67 @@ Usage
 -----
 
 ```
-$ rl [OPTION]... [FILE]...
+$ rl [<option(s)>] [<file(s)>]
+reverse lines.
 
-Options:
-  -d, --delimiter=DELIM    delimit line by DELIM
-  -h, --help               display this help text and exit
-  -v, --version            output version information and exit
+options:
+  -s, --separator=SEP  separate lines by SEP
+  -i, --keep-indent    keep the first indent as indents
+      --help           print usage and exit
 ```
+
+Requirements
+------------
+
+- Perl (5.8.0 or later)
 
 Installation
 ------------
 
-### compiled binary
+1. Copy `rl` into your `$PATH`.
+2. Make `rl` executable.
 
-See [releases](https://github.com/nil-two/rl/releases)
-
-### go get
+### Example
 
 ```
-go get github.com/nil-two/rl
+$ curl -L https://raw.githubusercontent.com/nil-two/rl/master/rl > ~/bin/rl
+$ chmod +x ~/bin/rl
 ```
+
+Note: In this example, `$HOME/bin` must be included in `$PATH`.
 
 Options
 -------
 
-### -h, --help
+### -s, --separator=\<sep\>
 
-Display a help message.
+Separate a line by sep.
+Default value is empty string.
 
-### -v, --version
+```
+$ echo foo,bar,baz | rl -s,
+baz,bar,foo
+```
 
-Output the version of rl.
+### -i, --keep-indent
 
-### -d, --delimiter=DELIM
+Keep the first indent as indents.
+Default is disabled.
 
-Reverse lines delimited by DELIM.
+```
+$ printf "%s\n" '  foo' 'bar' '    baz' | rl -i
+  oof
+  rab
+  zab
+```
 
-```sh
-$ cat nums
-1,20,300,4000
-10,20,30,40,50
+### --help
 
-$ cat nums | rl -d,
-4000,300,20,1
-50,40,30,20,10
+Print usage and exit.
+
+```
+$ rl --help
+(Print usage)
 ```
 
 License
