@@ -1,3 +1,11 @@
+### v1.0.0 - 2023-12-29
+
+- Rewrite in Perl.
+- Add -i, --keep-indent options to keep indents.
+- Rename -d, --delimiter options to -s, --separator.
+- Remove -h option. --help option is still available.
+- Remove -v, --version options.
+
 ### v0.3.1 - 2016-01-12
 
 - Release compiled binary for Windows, OSX, and Linux.
