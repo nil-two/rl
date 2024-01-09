@@ -1,3 +1,8 @@
+### v2.0.0 - 2024-01-10
+
+- Disable auto trimming. When rl called twice, result becomes stdin as is.
+- Change -i, --keep-indent to keep indents per lines.
+
 ### v1.0.0 - 2023-12-29
 
 - Rewrite in Perl.
