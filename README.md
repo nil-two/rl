@@ -18,8 +18,8 @@ $ rl [<option(s)>] [<file(s)>]
 reverse lines.
 
 options:
-  -s, --separator=SEP  separate lines by SEP
-  -i, --keep-indent    keep the first indent as indents
+  -s, --separator=SEP  separate each line by SEP
+  -i, --keep-indent    keep indents of each line
       --help           print usage and exit
 ```
 
@@ -48,24 +48,32 @@ Options
 
 ### -s, --separator=SEP
 
-Separate a line by sep.
+Separate each line by SEP.
 Default value is empty string.
 
 ```
+$ echo foo,bar,baz
+foo,bar,baz
+
 $ echo foo,bar,baz | rl -s,
 baz,bar,foo
 ```
 
 ### -i, --keep-indent
 
-Keep the first indent as indents.
+Keep indents of each line.
 Default is disabled.
 
 ```
+$ printf "%s\n" '  foo' 'bar' '    baz'
+  foo
+bar
+    baz
+
 $ printf "%s\n" '  foo' 'bar' '    baz' | rl -i
   oof
-  rab
-  zab
+rab
+    zab
 ```
 
 ### --help

@@ -18,8 +18,8 @@ usage: $cmd_name [<option(s)>] [<file(s)>]
 reverse lines.
 
 options:
-  -s, --separator=SEP  separate lines by SEP
-  -i, --keep-indent    keep the first indent as indents
+  -s, --separator=SEP  separate each line by SEP
+  -i, --keep-indent    keep indents of each line
       --help           print usage and exit
 EOL
 
@@ -42,22 +42,24 @@ sub read_lines_from_argf {
 sub reverse_lines {
     my ($lines, $separator, $keep_indent) = @_;
     my $reversed_lines     = [];
-    my $first_indent       = "";
-    my $first_indent_found = 0;
     my $separator_pattern  = qr/@{[quotemeta($separator)]}/;
     for my $line (@$lines) {
-        if ($keep_indent && !$first_indent_found) {
-            $first_indent       = $line =~ s/^(\s*).*/$1/r;
-            $first_indent_found = 1;
+        my $prefix  = "";
+        my $postfix = "";
+        if ($keep_indent) {
+            $prefix  = $line =~ s/^(\s*).*/$1/r;
+            $postfix = $line =~ s/.*?(\s*)$/$1/r;
+            $line    = $line =~ s/^\s*|\s*$//gr;;
         }
-        my $trimed_line = $line =~ s/^\s+|\s+$//gr;
-        my $cells       = [split($separator_pattern, $trimed_line)];
+        my $cells = [split($separator_pattern, $line)];
         for (my $i = 0; $i < @$cells / 2; $i++) {
             ($cells->[$i], $cells->[$#$cells - $i]) = ($cells->[$#$cells - $i], $cells->[$i]);
         }
-        my $reversed_line        = join($separator, @$cells);
-        my $trimed_reversed_line = $first_indent . ($reversed_line =~ s/^\s+|\s+$//gr);
-        push @$reversed_lines, $trimed_reversed_line;
+        my $reversed_line = join($separator, @$cells);
+        if ($keep_indent) {
+          $reversed_line = $prefix . $reversed_line . $postfix;
+        }
+        push @$reversed_lines, $reversed_line;
     }
     return $reversed_lines;
 }

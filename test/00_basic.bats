@@ -41,7 +41,7 @@ check() {
   [[ $(cat "$stdout") == $dst ]]
 }
 
-@test 'rl: trim lines' {
+@test 'rl: print stdin as is if called twice' {
   src=$(printf "%s\n" $'
     Hello, world!  
     100,200,300  
@@ -50,20 +50,12 @@ check() {
   100,200,  300
   100  ,200,300
   ' | sed -e '1d' -e 's/^  //')
-  dst=$(printf "%s\n" $'
-  world!,Hello
-  300,200,100
-  300,200,100
-  300,200,100
-  300,200,100
-  300,200,100
-  ' | sed -e '1d' -e 's/^  //')
-  check "$cmd" -s, <<< "$src"
+  CMD=$cmd check bash -c '"$CMD" | "$CMD"' <<< "$src"
   [[ $(cat "$exitcode") == 0 ]]
-  [[ $(cat "$stdout") == $dst ]]
+  [[ $(cat "$stdout") == $src ]]
 }
 
-@test 'rl: separate lines if -s passed' {
+@test 'rl: separate each line if -s passed' {
   src=$(printf "%s\n" $'
   Hello, world!
   100
@@ -72,7 +64,7 @@ check() {
   100,200,300,400
   ' | sed -e '1d' -e 's/^  //')
   dst=$(printf "%s\n" $'
-  world!,Hello
+   world!,Hello
   100
   200,100
   300,200,100
@@ -83,7 +75,21 @@ check() {
   [[ $(cat "$stdout") == $dst ]]
 }
 
-@test 'rl: separate lines if --separator passed' {
+@test 'rl: print stdin as is if -s passed and called twice' {
+  src=$(printf "%s\n" $'
+    Hello, world!  
+    100,200,300  
+    100,200,300
+  100,200,300  
+  100,200,  300
+  100  ,200,300
+  ' | sed -e '1d' -e 's/^  //')
+  CMD=$cmd check bash -c '"$CMD" -s, | "$CMD" -s,' <<< "$src"
+  [[ $(cat "$exitcode") == 0 ]]
+  [[ $(cat "$stdout") == $src ]]
+}
+
+@test 'rl: separate each line if --separator passed' {
   src=$(printf "%s\n" $'
   Hello, world!
   100
@@ -92,7 +98,7 @@ check() {
   100,200,300,400
   ' | sed -e '1d' -e 's/^  //')
   dst=$(printf "%s\n" $'
-  world!,Hello
+   world!,Hello
   100
   200,100
   300,200,100
@@ -103,7 +109,7 @@ check() {
   [[ $(cat "$stdout") == $dst ]]
 }
 
-@test 'rl: keep first indent if -i passed' {
+@test 'rl: keep indents of each line if -i passed' {
   src=$(printf "%s\n" $'
     100
   200
@@ -111,15 +117,29 @@ check() {
   ' | sed -e '1d' -e 's/^  //')
   dst=$(printf "%s\n" $'
     001
-    002
-    003
+  002
+      003
   ' | sed -e '1d' -e 's/^  //')
   check "$cmd" -i <(printf "%s\n" "$src")
   [[ $(cat "$exitcode") == 0 ]]
   [[ $(cat "$stdout") == $dst ]]
 }
 
-@test 'rl: keep first indent if --keep-indent passed' {
+@test 'rl: print stdin as is if -i passed and called twice' {
+  src=$(printf "%s\n" $'
+    Hello, world!  
+    100,200,300  
+    100,200,300
+  100,200,300  
+  100,200,  300
+  100  ,200,300
+  ' | sed -e '1d' -e 's/^  //')
+  CMD=$cmd check bash -c '"$CMD" -i | "$CMD" -i' <<< "$src"
+  [[ $(cat "$exitcode") == 0 ]]
+  [[ $(cat "$stdout") == $src ]]
+}
+
+@test 'rl: keep indents of each line if --keep-indent passed' {
   src=$(printf "%s\n" $'
     100
   200
@@ -127,12 +147,34 @@ check() {
   ' | sed -e '1d' -e 's/^  //')
   dst=$(printf "%s\n" $'
     001
-    002
-    003
+  002
+      003
   ' | sed -e '1d' -e 's/^  //')
   check "$cmd" --keep-indent <(printf "%s\n" "$src")
   [[ $(cat "$exitcode") == 0 ]]
   [[ $(cat "$stdout") == $dst ]]
+}
+
+@test 'rl: last cell prefix migrate into indent if -i and -s passed and called twice' {
+  src=$(printf "%s\n" $'
+    Hello, world!  
+    100,200,300  
+    100,200,300
+  100,200,300  
+  100,200,  300
+  100  ,200,300
+  ' | sed -e '1d' -e 's/^  //')
+  dst=$(printf "%s\n" $'
+     Hello,world!  
+    100,200,300  
+    100,200,300
+  100,200,300  
+    100,200,300
+  100,200,300  
+  ' | sed -e '1d' -e 's/^  //')
+  CMD=$cmd check bash -c '"$CMD" -i | "$CMD" -i' <<< "$src"
+  [[ $(cat "$exitcode") == 0 ]]
+  [[ $(cat "$stdout") == $src ]]
 }
 
 
