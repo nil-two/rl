@@ -46,7 +46,7 @@ Note: In this example, `$HOME/bin` must be included in `$PATH`.
 Options
 -------
 
-### -s, --separator=\<sep\>
+### -s, --separator=SEP
 
 Separate a line by sep.
 Default value is empty string.
